@@ -1,46 +1,33 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Flashlight Control</title>
+  <title>LiFi data transmission</title>
 </head>
+<link rel="shortcut icon" href="./assets/1713701640294.jpg" type="image/x-icon">
+<link rel="stylesheet" href="./style.css">
+
 <body>
-  <button onclick="turnOnFlashlight()">Turn On Flashlight</button>
-  <button onclick="turnOffFlashlight()">Turn Off Flashlight</button>
+  <header>
+    <h1>LiFi data transmission</h1>
+  </header>
+  <main>
+    <form id="form">
+      <input type="text" placeholder="Enter data to be send" id="userData">
+      <p id="status">sending data</p>
+      <button type="submit" id="sendData">Send Data</button>
+    </form>
+    <div class="image">
+      <img src="./assets/1713701640307.png" alt="image">
+    </div>
+  </main>
+  <footer>
+    <p>developed by Aman Prasad</p>
+    <p>Copyright &copy; 2024 All rights reserved.</p>
+  </footer>
 
-  <script>
-    let stream = null;
-    let track = null;
 
-    function turnOnFlashlight() {
-      if ('mediaDevices' in navigator && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: 'environment'
-          }
-        })
-        .then((mediaStream) => {
-          stream = mediaStream;
-          const track = stream.getVideoTracks()[0];
-          track.applyConstraints({ advanced: [{ torch: true }] });
-        })
-        .catch((err) => {
-          console.error('Error accessing camera:', err);
-        });
-      } else {
-        console.error('getUserMedia() is not supported by your browser');
-      }
-    }
-
-    function turnOffFlashlight() {
-      if (track) {
-        track.stop();
-        track = null;
-      }
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-        stream = null;
-      }
-    }
-  </script>
+  <script src="./script.js"></script>
 </body>
+
 </html>
