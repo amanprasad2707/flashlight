@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flashlight Control</title>
+</head>
+<body>
+  <button onclick="turnOnFlashlight()">Turn On Flashlight</button>
+  <button onclick="turnOffFlashlight()">Turn Off Flashlight</button>
+
+  <script>
+    let stream = null;
+    let track = null;
+
+    function turnOnFlashlight() {
+      if ('mediaDevices' in navigator && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: 'environment'
+          }
+        })
+        .then((mediaStream) => {
+          stream = mediaStream;
+          const track = stream.getVideoTracks()[0];
+          track.applyConstraints({ advanced: [{ torch: true }] });
+        })
+        .catch((err) => {
+          console.error('Error accessing camera:', err);
+        });
+      } else {
+        console.error('getUserMedia() is not supported by your browser');
+      }
+    }
+
+    function turnOffFlashlight() {
+      if (track) {
+        track.stop();
+        track = null;
+      }
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+      }
+    }
+  </script>
+</body>
+</html>
